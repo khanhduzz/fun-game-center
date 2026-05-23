@@ -121,6 +121,7 @@ export const authConfig = {
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
+        token.id = user.id
         token.role = user.role
         token.fish_cash = user.fish_cash
       }
@@ -128,6 +129,7 @@ export const authConfig = {
     },
     async session({ session, token }: any) {
       if (session.user) {
+        session.user.id = token.id
         session.user.role = token.role
         session.user.fish_cash = token.fish_cash
       }
