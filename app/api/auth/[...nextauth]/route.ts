@@ -1,7 +1,3 @@
-// import { handlers } from "@/lib/auth"
-
-// export const { GET, POST } = handlers
-
 import NextAuth from "next-auth"
 import { authConfig } from "@/lib/auth"
 

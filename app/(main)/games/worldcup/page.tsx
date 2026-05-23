@@ -1,11 +1,9 @@
-// app/(main)/games/worldcup/page.tsx
 import MatchCard from "@/components/game/MatchCard";
 import { getWallet } from "@/features/wallet/service";
 import { joinWorldCup } from "@/features/worldcup/service";
 import { authConfig } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getServerSession } from "next-auth/next";
-import { useSession } from "next-auth/react";
 
 export default async function WorldCupPage() {
   const session = await getServerSession(authConfig);
