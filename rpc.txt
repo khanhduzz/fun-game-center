@@ -1,0 +1,51 @@
+create or replace function settle_match(
+  p_match_id uuid,
+  p_match_result text
+)
+returns void
+language plpgsql
+security definer
+as $$
+begin
+  -- prevent double settlement
+  if exists (
+    select 1 from matches where id = p_match_id and result is not null
+  ) then
+    raise exception 'Match already settled';
+  end if;
+
+  -- update match
+  update matches
+  set result = p_match_result
+  where id = p_match_id;
+
+  -- update bets
+  update bets
+  set result = case
+    when prediction = p_match_result then 'WIN'
+    else 'LOSE'
+  end
+  where match_id = p_match_id;
+
+  -- payout winners (wallet)
+  update wallets w
+  set balance = w.balance + b.stake
+  from bets b
+  where b.match_id = p_match_id
+    and b.prediction = p_match_result
+    and w.user_id = b.user_id
+    and w.game = 'worldcup';
+
+  -- insert transactions for winners
+  insert into transactions (user_id, amount, type, game)
+  select
+    b.user_id,
+    b.stake,
+    'BET_WIN',
+    'worldcup'
+  from bets b
+  where b.match_id = p_match_id
+    and b.prediction = p_match_result;
+
+end;
+$$;

@@ -1,0 +1,25 @@
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/lib/auth";
+import { supabaseServer } from "@/lib/supabase-server";
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authConfig);
+
+  // only admin
+  if (!session?.user || session.user.role !== "admin") {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { matchId, result } = await req.json();
+ console.log("Settling match..." + JSON.stringify({ matchId, result }));
+  try {
+    await supabaseServer.rpc("settle_match", {
+      p_match_id: matchId,
+      p_match_result: result,
+    });
+
+    return Response.json({ success: true });
+  } catch (err: any) {
+    return Response.json({ error: err.message }, { status: 400 });
+  }
+}

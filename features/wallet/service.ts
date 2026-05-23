@@ -60,18 +60,39 @@ export async function getOrCreateWallet(
   return await createWallet(userId, game, initialBalance)
 }
 
+export async function getWalletMap(userId: string) {
+  if (!userId) return {};
+
+  const { data, error } = await supabaseServer
+    .from("wallets")
+    .select("game, balance")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+
+  const result: Record<string, number> = {};
+
+  for (const w of data ?? []) {
+    result[w.game] = w.balance;
+  }
+console.log("GET WALLET MAP:", { userId, data })
+  return result;
+}
+
 export async function getWallet(userId: string, game: string) {
+    if (!userId) return null
   const { data } = await supabaseServer
     .from("wallets")
     .select("*")
     .eq("user_id", userId)
     .eq("game", game)
-    .single()
-
+    .maybeSingle();
+    console.log("GET WALLET:", { userId, game, data })
   return data
 }
 
 export async function createWallet(userId: string, game: string, initialBalance = 0) {
+  if (!userId) return null
   const { data, error } = await supabaseServer
     .from("wallets")
     .insert({
@@ -86,7 +107,7 @@ export async function createWallet(userId: string, game: string, initialBalance 
     console.error("CREATE WALLET ERROR:", error)
     throw new Error(error.message)
   }
-
+  console.log("CREATE WALLET:", { userId, game, initialBalance, data })
   return data
 }
 
@@ -96,15 +117,16 @@ export async function updateWallet(
   amount: number,
   type: string
 ) {
+  if (!userId) return null
   const wallet = await getWallet(userId, game)
 
   if (!wallet) throw new Error("Wallet not found")
 
   const newBalance = wallet.balance + amount
 
-  if (newBalance < 0) {
-    throw new Error("Not enough balance")
-  }
+//   if (newBalance < 0) {
+//     throw new Error("Not enough balance")
+//   }
 
   await supabaseServer
     .from("wallets")

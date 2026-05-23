@@ -1,3 +1,4 @@
+import { createWallet } from "@/features/wallet/service"
 import { supabase } from "@/lib/supabase"
 import bcrypt from "bcryptjs"
 
@@ -25,13 +26,6 @@ export async function POST(req: Request) {
     return Response.json({ error: error.message }, { status: 400 })
   }
 
-  await supabase.from("transactions").insert([
-    {
-      user_id: data.id,
-      amount: 150,
-      type: "BONUS"
-    }
-  ])
-
+  await createWallet(data.id, "main", 0)
   return Response.json(data)
 }
