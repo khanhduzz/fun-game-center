@@ -50,3 +50,37 @@ export async function placeOrUpdateBet(
   throw e;
 }
 }
+
+export async function cancelBet(userId: string, matchId: string) {
+  try {
+    // Get current bet to know the stake amount
+    const { data: bet, error: fetchError } = await supabaseServer
+      .from("bets")
+      .select("stake")
+      .eq("user_id", userId)
+      .eq("match_id", matchId)
+      .maybeSingle();
+
+    if (fetchError) throw fetchError;
+    if (!bet) throw new Error("No active bet found for this match");
+
+    const stakeToRefund = bet.stake;
+
+    // Delete the bet
+    const { error: deleteError } = await supabaseServer
+      .from("bets")
+      .delete()
+      .eq("user_id", userId)
+      .eq("match_id", matchId);
+
+    if (deleteError) throw deleteError;
+
+    // Refund to wallet
+    await updateWallet(userId, "worldcup", stakeToRefund, "BET_CANCELLED");
+
+    return { success: true, refunded: stakeToRefund };
+  } catch (e: any) {
+    console.error("Cancel bet failed:", e);
+    throw e;
+  }
+}

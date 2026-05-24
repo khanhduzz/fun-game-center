@@ -2,7 +2,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import useSWR from "swr";
-import { Coins, LogOut, Gamepad2 } from "lucide-react";
+import { Coins, LogOut, Gamepad2, Link } from "lucide-react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -20,7 +20,7 @@ export default function Header() {
     <header className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40">
       <div className="max-w-5xl mx-auto px-10 py-5 flex justify-between items-center">
         {/* Logo / Brand */}
-        <div className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <div className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-violet-600 p-2.5 rounded-xl shadow-[0_0_20px_rgba(234,179,8,0.3)]">
             <Gamepad2 className="w-6 h-6 text-black" />
           </div>
@@ -32,7 +32,7 @@ export default function Header() {
               Fish Game Center
             </p>
           </div>
-        </div>
+        </a>
 
         {/* Right Side - User Info & Actions */}
         <div className="flex items-center gap-4">

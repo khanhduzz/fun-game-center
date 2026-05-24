@@ -10,8 +10,11 @@ import {
   XCircle,
   AlertTriangle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function MatchCard({ match, bet, role }: any) {
+  const router = useRouter();
+
   const [stake, setStake] = useState(bet?.stake || 10);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{
@@ -21,10 +24,10 @@ export default function MatchCard({ match, bet, role }: any) {
 
   const isLocked = new Date(match.match_time) < new Date();
 
-  // Auto-hide toast after 3 seconds
+  // Auto-hide toast
   useEffect(() => {
     if (toast) {
-      const timer = setTimeout(() => setToast(null), 3000);
+      const timer = setTimeout(() => setToast(null), 2800);
       return () => clearTimeout(timer);
     }
   }, [toast]);
@@ -40,6 +43,10 @@ export default function MatchCard({ match, bet, role }: any) {
     type: "success" | "error" | "info" = "success",
   ) => {
     setToast({ message, type });
+  };
+
+  const refreshData = () => {
+    router.refresh(); // Soft refresh - updates server data without full reload
   };
 
   const placeBet = async (prediction: string) => {
@@ -63,16 +70,20 @@ export default function MatchCard({ match, bet, role }: any) {
         bet ? "Bet updated successfully 🔄" : "Bet placed successfully 🐟🔥",
         "success",
       );
-      window.location.reload();
+      setTimeout(refreshData, 900); // Small delay to show toast
     }
   };
 
   const cancelBet = async () => {
     setLoading(true);
-    const res = await fetch("/api/bets/cancel", {
+
+    const res = await fetch("/api/bets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ matchId: match.id }),
+      body: JSON.stringify({
+        matchId: match.id,
+        action: "cancel",
+      }),
     });
 
     const data = await res.json();
@@ -81,8 +92,11 @@ export default function MatchCard({ match, bet, role }: any) {
     if (!res.ok) {
       showToast(data.error || "Failed to cancel bet", "error");
     } else {
-      showToast("Bet cancelled successfully ❌", "success");
-      window.location.reload();
+      showToast(
+        `Bet cancelled - ${data.refunded || ""} 🐟 refunded`,
+        "success",
+      );
+      setTimeout(refreshData, 900);
     }
   };
 
@@ -101,7 +115,7 @@ export default function MatchCard({ match, bet, role }: any) {
       showToast(data.error || "Failed to settle match", "error");
     } else {
       showToast("Match settled successfully", "success");
-      window.location.reload();
+      setTimeout(refreshData, 900);
     }
   };
 
