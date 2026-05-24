@@ -52,7 +52,7 @@ export default function LoginPage() {
 
       // Short delay so the user can experience the success state
       setTimeout(() => {
-        router.push("/games");
+        router.push("/");
       }, 1200);
     } else {
       setToast({ message: "Invalid credentials ❌", type: "error" });
