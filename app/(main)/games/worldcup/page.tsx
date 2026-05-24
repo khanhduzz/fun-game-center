@@ -1,19 +1,16 @@
 import { getWallet } from "@/features/wallet/service";
-import { joinWorldCup } from "@/features/worldcup/service";
 import { authConfig } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getServerSession } from "next-auth/next";
-import { Trophy, Calendar, Users } from "lucide-react";
-import WorldCupClient from "./WorldCupClient"; // We'll create this
+import WorldCupClient from "./WorldCupClient";
 
 export default async function WorldCupPage() {
   const session = await getServerSession(authConfig);
+  const userId = session?.user?.id || "";
 
-  let wallet = await getWallet(session?.user?.id || "", "worldcup");
-
-  if (!wallet) {
-    wallet = await joinWorldCup(session?.user?.id || "");
-  }
+  // 1. Fetch wallet. Do NOT auto-create it here.
+  const wallet = await getWallet(userId, "worldcup");
+  const isNewPlayer = !wallet;
 
   const { data: matches } = await supabaseServer
     .from("matches")
@@ -23,7 +20,7 @@ export default async function WorldCupPage() {
   const { data: bets } = await supabaseServer
     .from("bets")
     .select("*")
-    .eq("user_id", session?.user?.id);
+    .eq("user_id", userId);
 
   const betMap: Record<string, any> = {};
   for (const bet of bets ?? []) {
@@ -38,6 +35,8 @@ export default async function WorldCupPage() {
   return (
     <WorldCupClient
       wallet={wallet}
+      isNewPlayer={isNewPlayer} // 2. Pass down registration requirement flag
+      userId={userId} // 3. Pass down userId for the client action
       upcomingMatches={upcomingMatches}
       finishedMatches={finishedMatches}
       betMap={betMap}

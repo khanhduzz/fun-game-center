@@ -25,7 +25,7 @@ export const authConfig = {
 
         const { data: user } = await supabase
           .from("users")
-          .select("*")
+          .select("id, name, email, role, password")
           .eq("email", email)
           .single()
 
