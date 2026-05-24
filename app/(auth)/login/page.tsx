@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Imported state hooks
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Gamepad2, Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react"; // Added icons for toast
+import { Gamepad2, Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -55,7 +55,7 @@ export default function LoginPage() {
         router.push("/");
       }, 1200);
     } else {
-      setToast({ message: "Invalid credentials ❌", type: "error" });
+      setToast({ message: "Invalid credentials", type: "error" });
     }
   };
 

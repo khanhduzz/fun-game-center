@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Gamepad2, Trophy, Layers, LogOut } from "lucide-react";
+import { Gamepad2, Trophy, Layers, LogOut, ShieldCheck } from "lucide-react";
 
 export default function GameSidebar() {
   const pathname = usePathname();
@@ -77,10 +77,30 @@ export default function GameSidebar() {
       </div>
 
       {/* Footer actions */}
-      <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-all text-sm font-medium w-full mt-auto">
-        <LogOut className="w-4 h-4" />
-        <span>Sign Out</span>
-      </button>
+      <div className="flex flex-col gap-2">
+        <div className="bg-zinc-950/60 border border-zinc-900 rounded-2xl p-4 flex items-start gap-3">
+          <ShieldCheck className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider">
+              Simulation Disclaimer
+            </h4>
+            <p className="text-zinc-600 text-[10px] leading-relaxed">
+              All games, match predictions, and asset actions hosted on this
+              platform are for
+              <span className="text-zinc-500 font-medium">
+                {" "}
+                entertainment and internal team simulation purposes only
+              </span>
+              . No real fiat currencies, actual wagers, or real-world financial
+              assets are used or processed.
+            </p>
+          </div>
+        </div>
+        <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-all text-sm font-medium w-full mt-auto">
+          <LogOut className="w-4 h-4" />
+          <span>Sign Out</span>
+        </button>
+      </div>
     </aside>
   );
 }

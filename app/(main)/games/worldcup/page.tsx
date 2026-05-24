@@ -35,8 +35,8 @@ export default async function WorldCupPage() {
   return (
     <WorldCupClient
       wallet={wallet}
-      isNewPlayer={isNewPlayer} // 2. Pass down registration requirement flag
-      userId={userId} // 3. Pass down userId for the client action
+      isNewPlayer={isNewPlayer}
+      userId={userId}
       upcomingMatches={upcomingMatches}
       finishedMatches={finishedMatches}
       betMap={betMap}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // 1. Added useState & useEffect
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,26 +10,31 @@ import {
   User,
   Mail,
   Lock,
+  KeyRound,
   AlertCircle,
   CheckCircle2,
-} from "lucide-react"; // Added icons for toast
+} from "lucide-react";
 
+// updated schema to require and validate the secret key
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  secretKey: z.string().min(1, "Secret arena key is required"),
 });
+
+type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const router = useRouter();
 
-  // 2. Added your custom toast state
+  // custom toast state
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
 
-  // 3. Added your auto-hide timer effect
+  // auto-hide timer effect
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 2800);
@@ -41,35 +46,35 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data), // Sends the 'secretKey' along with the registration info
     });
 
     if (res.ok) {
-      // 4. Trigger success state
+      // trigger success state
       setToast({ message: "Account created successfully 🎉", type: "success" });
 
-      // Delay navigation slightly so they can actually see your beautiful toast
+      // delay navigation slightly to see toast
       setTimeout(() => {
         router.push("/login");
-      }, 1500);
+      }, 1000);
     } else {
       const err = await res.json();
-      // 5. Trigger error state
+      // error state
       setToast({ message: err.error || "Registration failed", type: "error" });
     }
   };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
-      {/* 6. Custom Floating Toast UI */}
+      {/* Custom Floating Toast UI */}
       {toast && (
         <div
           className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl border shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 ${
@@ -154,6 +159,24 @@ export default function RegisterPage() {
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1.5">
                   {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* 2. Added Secret Key Verification Field */}
+            <div className="relative">
+              <div className="absolute left-4 top-3.5 text-zinc-500">
+                <KeyRound className="w-5 h-5" />
+              </div>
+              <input
+                type="text"
+                {...register("secretKey")}
+                placeholder="Secret Arena Key (Verification)"
+                className="w-full bg-zinc-950 border border-zinc-700 focus:border-yellow-400 pl-12 py-3.5 rounded-2xl text-white placeholder-zinc-500 focus:outline-none transition"
+              />
+              {errors.secretKey && (
+                <p className="text-red-500 text-sm mt-1.5">
+                  {errors.secretKey.message}
                 </p>
               )}
             </div>

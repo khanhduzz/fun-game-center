@@ -12,11 +12,12 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { joinWorldCupAction } from "@/features/worldcup/actions";
+import LoadingWave from "@/components/ui/LoadingWave";
 
 interface WorldCupClientProps {
   wallet: any;
-  isNewPlayer: boolean; // Pass down verification flag
-  userId: string; // Pass down user id for initialization action
+  isNewPlayer: boolean;
+  userId: string;
   upcomingMatches: any[];
   finishedMatches: any[];
   betMap: Record<string, any>;
@@ -109,17 +110,7 @@ export default function WorldCupClient({
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center">
-        <div className="relative w-20 h-20">
-          <div className="absolute inset-0 border-4 border-yellow-400/20 rounded-full" />
-          <div className="absolute inset-0 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
-        </div>
-        <p className="text-yellow-400 mt-6 text-lg font-medium tracking-wide">
-          Loading World Cup Matches...
-        </p>
-      </div>
-    );
+    return <LoadingWave message="Loading World Cup Arena..." />;
   }
 
   return (

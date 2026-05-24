@@ -1,4 +1,5 @@
 import { supabaseServer } from "@/lib/supabase-server"
+import { handleSupabaseError } from "@/lib/supabaseErrorHandler"
 
 export async function addFishCash(userId: string, amount: number, type: string) {
   const { data: user } = await supabaseServer
@@ -68,7 +69,7 @@ export async function getWalletMap(userId: string) {
     .select("game, balance")
     .eq("user_id", userId);
 
-  if (error) throw error;
+  if (error) return handleSupabaseError(error);
 
   const result: Record<string, number> = {};
 
@@ -105,7 +106,7 @@ export async function createWallet(userId: string, game: string, initialBalance 
 
   if (error) {
     console.error("CREATE WALLET ERROR:", error)
-    throw new Error(error.message)
+    return handleSupabaseError(error);
   }
   console.log("CREATE WALLET:", { userId, game, initialBalance, data })
   return data

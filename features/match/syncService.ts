@@ -1,5 +1,6 @@
 // features/matches/syncService.ts
 import { supabaseServer } from "@/lib/supabase-server";
+import { handleSupabaseError } from "@/lib/supabaseErrorHandler";
 
 const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
 const BASE_URL = "https://api.football-data.org/v4";
@@ -60,6 +61,7 @@ export async function syncWorldCupMatches() {
 
       if (error) {
         console.error(`Error syncing match ${match.id}:`, error.message);
+        handleSupabaseError(error);
       } else {
         updatedCount++;
       }
