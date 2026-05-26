@@ -17,6 +17,7 @@ import {
   joinWorldCupAction,
 } from "@/features/worldcup/actions";
 import LoadingWave from "@/components/ui/LoadingWave";
+import MatchCardModern from "@/components/game/MatchCardModern";
 
 interface WorldCupClientProps {
   wallet: any;
@@ -361,7 +362,7 @@ export default function WorldCupClient({
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedUpcoming.map((match) => (
-                  <MatchCard
+                  <MatchCardModern
                     key={match.id}
                     match={match}
                     bet={betMap[match.id]}
