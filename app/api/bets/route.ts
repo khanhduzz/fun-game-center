@@ -20,6 +20,7 @@ export async function POST(req: Request) {
 
     // Place or Update Bet
     await placeOrUpdateBet(session.user.id, matchId, prediction, stake);
+    console.log("Bet placed/updated successfully" + JSON.stringify({ userId: session.user.id, matchId, prediction, stake }));
     return Response.json({ success: true });
   } catch (err: any) {
     return Response.json({ error: err.message }, { status: 400 });
