@@ -125,10 +125,6 @@ export async function updateWallet(
 
   const newBalance = wallet.balance + amount
 
-//   if (newBalance < 0) {
-//     throw new Error("Not enough balance")
-//   }
-
   await supabaseServer
     .from("wallets")
     .update({ balance: newBalance })
