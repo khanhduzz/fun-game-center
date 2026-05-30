@@ -10,12 +10,14 @@ export async function POST(req: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { matchId, result } = await req.json();
- console.log("Settling match..." + JSON.stringify({ matchId, result }));
+  const { matchId, result, homeScore, awayScore } = await req.json();
+ console.log("Settling match..." + JSON.stringify({ matchId, result, homeScore, awayScore }));
   try {
     await supabaseServer.rpc("settle_match", {
       p_match_id: matchId,
       p_match_result: result,
+      p_home_score: homeScore,
+      p_away_score: awayScore,
     });
 
     return Response.json({ success: true });

@@ -147,12 +147,17 @@ export default function MatchCard({ match, bet, role }: any) {
     }
   };
 
-  const settleMatch = async (matchId: string, result: string) => {
+  const settleMatch = async (
+    matchId: string,
+    result: string,
+    homeScore: number,
+    awayScore: number,
+  ) => {
     setLoading(true);
     const res = await fetch("/api/matches/settle", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ matchId, result }),
+      body: JSON.stringify({ matchId, result, homeScore, awayScore }),
     });
 
     const data = await res.json();
@@ -489,7 +494,7 @@ export default function MatchCard({ match, bet, role }: any) {
             {["HOME", "DRAW", "AWAY"].map((res) => (
               <button
                 key={res}
-                onClick={() => settleMatch(match.id, res)}
+                onClick={() => settleMatch(match.id, res, 0, 0)}
                 className="py-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl font-bold transition shadow-sm text-[10px]"
               >
                 🏆 {res}
