@@ -422,7 +422,7 @@ export default function WorldCupClientModern({
               {displayedUpcoming.map((match) => (
                 <div
                   key={match.id}
-                  className="bg-white rounded-3xl p-1 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 duration-200 border border-slate-100"
+                  className="bg-white flex flex-col justify-between rounded-3xl p-1 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 duration-200 border border-slate-100"
                 >
                   <MatchCardModern
                     match={match}
@@ -484,7 +484,11 @@ export default function WorldCupClientModern({
                   key={match.id}
                   className="bg-slate-100 border border-slate-200/80 rounded-3xl shadow-inner grayscale-[20%] hover:grayscale-0 transition-all"
                 >
-                  <MatchCard match={match} bet={betMap[match.id]} role={role} />
+                  <MatchCardModern
+                    match={match}
+                    bet={betMap[match.id]}
+                    role={role}
+                  />
                 </div>
               ))}
             </div>

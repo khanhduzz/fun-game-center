@@ -27,7 +27,7 @@ export default async function WorldCupPage() {
 
   for (const bet of bets ?? []) {
     betMap[bet.match_id] = bet;
-    if (bet.status === "WIN" || bet.is_won === true) {
+    if (bet.result === "WIN" || bet.is_won === true) {
       wonBetsCount++;
     }
   }
