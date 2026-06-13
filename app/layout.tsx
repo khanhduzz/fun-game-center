@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PXP Arcade",
-  description: "Game center for PXP Team",
+  title: "X Arcade",
+  description: "Game center for X Team",
 };
 
 export default function RootLayout({

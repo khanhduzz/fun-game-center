@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const { email, password, name, secretKey } = body
 
   // Validate the secret member key
-    if (!secretKey || secretKey.toUpperCase() !== "PXP") {
+    if (!secretKey || secretKey.toUpperCase() !== "X") {
       return Response.json(
         { error: "Invalid Secret Arena Key ❌ Access Denied." },
         { status: 403 }

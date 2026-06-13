@@ -16,7 +16,7 @@ export default function Footer() {
             </div>
             <div>
               <span className="text-white font-black tracking-wider text-sm block">
-                PXP ARCADE
+                X ARCADE
               </span>
               <span className="text-xs text-zinc-500">
                 Team Tournament Arena
@@ -59,7 +59,7 @@ export default function Footer() {
 
         {/* Bottom copyright row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-600">
-          <p>© {currentYear} PXP Team. All Rights Reserved.</p>
+          <p>© {currentYear} X Team. All Rights Reserved.</p>
           <p className="flex items-center gap-1.5">
             Crafted with{" "}
             <Heart className="w-3 h-3 text-red-500/80 fill-red-500/20" /> for

@@ -25,7 +25,7 @@ export default function GameSidebarModern() {
 
           <div>
             <h1 className="font-black text-xl tracking-wider text-slate-900">
-              PXP<span className="text-yellow-500">.</span>
+              X<span className="text-yellow-500">.</span>
             </h1>
             <p className="text-[10px] text-emerald-600 font-bold tracking-widest uppercase">
               World Cup Hub

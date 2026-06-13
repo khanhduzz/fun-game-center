@@ -33,7 +33,7 @@ export default function FooterModern() {
             </div>
             <div>
               <span className="text-slate-900 font-black tracking-wider text-sm block">
-                PXP WORLD CUP
+                X WORLD CUP
               </span>
               <span className="text-xs text-emerald-600 font-semibold">
                 Tournament Arena
@@ -56,7 +56,7 @@ export default function FooterModern() {
         {/* 🧾 Bottom Row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <p className="text-slate-500">
-            © {currentYear} PXP Team. All Rights Reserved.
+            © {currentYear} X Team. All Rights Reserved.
           </p>
 
           <p className="flex items-center gap-1.5 text-slate-500">

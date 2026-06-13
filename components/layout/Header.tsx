@@ -26,7 +26,7 @@ export default function Header() {
           </div>
           <div>
             <h1 className="font-black text-2xl tracking-wider bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              PXP<span className="text-yellow-400">.</span>
+              X<span className="text-yellow-400">.</span>
             </h1>
             <p className="text-[10px] text-zinc-500 font-bold tracking-widest uppercase -mt-1">
               Game Center
